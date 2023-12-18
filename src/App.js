@@ -4,9 +4,19 @@ import Home from "./pages/Home";
 import Mbti from "./pages/Mbti";
 import Community from "./pages/Community/Community";
 import PostCommunity from "./pages/Community/Create-post";
-
+import Join from "./pages/Join";
+import Login from "./pages/Login";
+import Result from "./pages/Result";
+import ResultRedirect from "./pages/ResultRedirect";
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 0,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
   return (
     <div className="App">
       <div className="bg-[url('./img/bg.jpg')] bg-cover h-screen">
@@ -15,13 +25,13 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/login" element />
+                <Route path="/join" element={<Join />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/mbti" element={<Mbti />} />
                 <Route path="/community" element={<Community />} />
                 <Route path="/create-post" element={<PostCommunity />} />
-                <Route path="/myteam" element />
-                <Route path="/proposal/:params" element />
-                <Route path="/mypage" element />
+                <Route path="/result" element={<ResultRedirect />} />
+                <Route path="/:mbti/result" element={<Result />} />
               </Routes>
             </BrowserRouter>
           </QueryClientProvider>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { mbtiQuestion } from "../data/mbti";
+import { useNavigate } from "react-router-dom";
 
 export default function MBTIQuestion({
   question,
@@ -7,7 +8,30 @@ export default function MBTIQuestion({
   url,
   setIndex,
   index,
+  mbti,
+  setMbti,
+  value,
 }) {
+  const navigate = useNavigate();
+
+  const mbtiResult = (index, value) => {
+    setMbti([...mbti, (mbti[index] = value)]);
+    if (index === 11) {
+      arraySplice();
+    }
+  };
+
+  const arraySplice = () => {
+    let array = [...mbti];
+    let result = [];
+    for (let i = 0; i < array.length; i += 3) {
+      let tempArray;
+      tempArray = array.slice(i, i + 3);
+      result.push(tempArray);
+    }
+    setMbti([result]);
+  };
+
   return (
     <div className="flex flex-col items-center">
       <div className="relative my-24">
@@ -23,9 +47,11 @@ export default function MBTIQuestion({
       <div className="flex flex-col">
         {option.map((option, i) => (
           <button
-            className="bg-orange-300 text-white rounded-lg p-3 mb-3 hover:bg-orange-200 w-72"
+            className="bg-orange-300 text-white rounded-lg p-3 mb-3 hover:bg-orange-200 w-80"
             onClick={() => {
               setIndex(index + 1);
+              // if (index === 11) navigate("/istp/result");
+              mbtiResult(index, value[i]);
             }}
             key={i}
           >
