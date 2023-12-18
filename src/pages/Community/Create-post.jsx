@@ -1,27 +1,32 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useMutation } from "@tanstack/react-query";
+import { createPost } from "../../utility/api";
+import { useNavigate } from "react-router-dom";
 const PostCommunity = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-
+  const mutation = useMutation({ mutationFn: createPost });
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //axios처리 클래스로 만들 시 차후 수정할 것
-    try {
-      //제목, 내용 저장 + 유저 아이디도 저장(?)
-      const response = await axios.post("/api/posts", {
-        title,
-        content,
-      });
-
-      console.log("게시글이 성공적으로 작성되었습니다.", response.data);
-
-      setTitle("");
-      setContent("");
-    } catch (error) {
-      console.error("게시글 작성 중 오류가 발생했습니다.", error);
-    }
+    mutation.mutate(
+      {
+        token: token,
+        title: title,
+        content: content,
+      },
+      {
+        onSuccess: (data) => {
+          alert("생성 성공!");
+          navigate(`/posts`);
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      }
+    );
   };
 
   return (

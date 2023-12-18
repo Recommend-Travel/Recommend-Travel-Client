@@ -8,6 +8,7 @@ import Join from "./pages/Join";
 import Login from "./pages/Login";
 import Result from "./pages/Result";
 import ResultRedirect from "./pages/ResultRedirect";
+import PostDetail from "./pages/Community/PostDetail";
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/mbti" element={<Mbti />} />
                 <Route path="/community" element={<Community />} />
+                <Route path="/posts/:id" element={<PostDetail />} />
                 <Route path="/create-post" element={<PostCommunity />} />
                 <Route path="/result" element={<ResultRedirect />} />
                 <Route path="/:mbti/result" element={<Result />} />
