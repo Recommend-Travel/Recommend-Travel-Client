@@ -26,9 +26,17 @@ export default function Home() {
           onClick={() => {
             navigate("/mbti");
           }}
-          className="bg-orange-300 text-white rounded-lg p-3 w-64 hover:bg-orange-200"
+          className="bg-orange-300 text-white rounded-lg p-3 w-64 hover:bg-orange-200 mb-5"
         >
           mbti 검사하기
+        </button>
+        <button
+          onClick={() => {
+            navigate("/community");
+          }}
+          className="bg-orange-300 text-white rounded-lg p-3 w-64 hover:bg-orange-200"
+        >
+          게시글 보러가기
         </button>
       </div>
     </div>
