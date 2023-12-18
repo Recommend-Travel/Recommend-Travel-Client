@@ -30,9 +30,17 @@ export async function createPost(postData) {
 }
 
 export async function getPost() {
-  return await api.get("/post");
+  return await api.get("/posts");
+}
+
+export async function getPostDetail(postId) {
+  return await api.get(`/getpostinfo?postid=${postId}`);
 }
 
 export async function createComment(commentData) {
   return await api.post("/add-comment", commentData);
+}
+
+export async function deleteUser(userid) {
+  return await api.post(`/delete/${userid}`);
 }

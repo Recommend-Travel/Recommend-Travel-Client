@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
   return (
     <div className="flex flex-col items-center h-full">
       <div className="flex flex-col items-center mt-44 mb-24">
@@ -14,14 +16,16 @@ export default function Home() {
         </div>
       </div>
       <div className="flex flex-col">
-        <button
-          onClick={() => {
-            navigate("/login");
-          }}
-          className="bg-orange-300 text-white rounded-lg p-3 w-64 mb-5 hover:bg-orange-200"
-        >
-          로그인하러 가기
-        </button>
+        {!token ? (
+          <button
+            onClick={() => {
+              navigate("/login");
+            }}
+            className="bg-orange-300 text-white rounded-lg p-3 w-64 mb-5 hover:bg-orange-200"
+          >
+            로그인하러 가기
+          </button>
+        ) : null}
         <button
           onClick={() => {
             navigate("/mbti");

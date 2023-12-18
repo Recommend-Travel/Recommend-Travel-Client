@@ -2,10 +2,35 @@ import React, { useState } from "react";
 import logo from "../img/logo.png";
 import { useNavigate } from "react-router-dom";
 import Intput from "../components/Intput";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../utility/api";
 export default function Login() {
   const [id, setID] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
+
+  const mutation = useMutation({ mutationFn: login });
+
+  const handleSubmit = (e) => {
+    mutation.mutate(
+      {
+        userid: id,
+        password: password,
+      },
+      {
+        onSuccess: (data) => {
+          localStorage.clear();
+          console.log(data);
+          localStorage.setItem("token", data?.data.token);
+          navigate("/");
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex justify-center">
       <div className="flex flex-col items-center mt-24">
@@ -24,14 +49,22 @@ export default function Login() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            handleSubmit();
           }}
         >
-          <Intput text={"아이디"} htmlFor={"id"} onChange={setID} value={id} />
+          <Intput
+            text={"아이디"}
+            htmlFor={"id"}
+            onChange={setID}
+            value={id}
+            type={"text"}
+          />
           <Intput
             text={"패스워드"}
             htmlFor={"password"}
             onChange={setPassword}
             value={password}
+            type={"password"}
           />
           <button className="bg-orange-400 text-white outline-none w-64 h-12 rounded-xl hover:bg-orange-300 mb-3">
             로그인 하기

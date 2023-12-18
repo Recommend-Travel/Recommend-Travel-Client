@@ -2,12 +2,39 @@ import React, { useState } from "react";
 import logo from "../img/logo.png";
 import { useNavigate } from "react-router-dom";
 import Intput from "../components/Intput";
+import { useMutation } from "@tanstack/react-query";
+import { register } from "../utility/api";
 export default function Join() {
   const [id, setID] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [name, setName] = useState();
 
   const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: register,
+  });
+
+  const handleSubmit = () => {
+    mutation.mutate(
+      {
+        userid: id,
+        username: name,
+        password: password,
+        email: email,
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex justify-center">
       <div className="flex flex-col items-center mt-24">
@@ -21,20 +48,36 @@ export default function Join() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            handleSubmit();
           }}
         >
-          <Intput text={"아이디"} htmlFor={"id"} onChange={setID} value={id} />
+          <Intput
+            text={"이름"}
+            htmlFor={"name"}
+            onChange={setName}
+            value={name}
+            type={"text"}
+          />
+          <Intput
+            text={"아이디"}
+            htmlFor={"id"}
+            onChange={setID}
+            value={id}
+            type={"text"}
+          />
           <Intput
             text={"이메일"}
             htmlFor={"email"}
             onChange={setEmail}
             value={email}
+            type={"text"}
           />
           <Intput
             text={"패스워드"}
             htmlFor={"password"}
             onChange={setPassword}
             value={password}
+            type={"password"}
           />
 
           <button className="bg-orange-400 text-white outline-none w-64 h-12 rounded-xl hover:bg-orange-300 mb-3">
