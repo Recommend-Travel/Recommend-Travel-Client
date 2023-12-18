@@ -3,16 +3,41 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPostDetail } from "../../utility/api";
 import Intput from "../../components/Intput";
+import { useMutation } from "@tanstack/react-query";
+import { createComment } from "../../utility/api";
 const PostDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [comment, setComment] = useState();
+  const mutation = useMutation({ mutationFn: createComment });
+  const token = localStorage.getItem("token");
   const { data, error } = useQuery({
     queryKey: ["result", id],
     queryFn: () => getPostDetail(id),
   });
-  console.log(error);
-  console.log(data);
+
+  console.log(data?.data.PostInfo?.postId);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    mutation.mutate(
+      {
+        token: token,
+        content: comment,
+        postid: data?.data.PostInfo?.postId,
+      },
+      {
+        onSuccess: (data) => {
+          alert("생성 성공!");
+          window.location.reload();
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      }
+    );
+  };
+
   return (
     <div>
       <div className="pt-24 flex flex-col items-center ">
@@ -22,7 +47,12 @@ const PostDetail = () => {
           {data?.data.PostInfo.content}
         </div>
       </div>
-      <form className="flex justify-center mt-10 items-center">
+      <form
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+        className="flex justify-center mt-10 items-center"
+      >
         <Intput
           text={"댓글"}
           htmlFor={"name"}
@@ -36,10 +66,12 @@ const PostDetail = () => {
       </form>
       <div className="flex flex-col justify-center items-center">
         <div className="my-3">댓글 목록</div>
-        <div className="border-2 w-3/4 p-2">
-          <div>정승연(ESTP)</div>
-          <div>와 정말 좋아보여요 저도 나중에 가봐야겠네여</div>
-        </div>
+        {data?.data.commentsInfo.map((comment) => (
+          <div className="border-2 w-3/4 p-2 my-2">
+            <div>{comment.user.username}</div>
+            <div>{comment.content}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

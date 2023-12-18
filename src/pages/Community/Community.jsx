@@ -13,6 +13,7 @@ const Community = () => {
   });
 
   console.log(data?.data);
+  console.log(error)
 
   return (
     <div className="flex flex-col">

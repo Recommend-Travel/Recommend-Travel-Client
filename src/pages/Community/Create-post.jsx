@@ -20,7 +20,7 @@ const PostCommunity = () => {
       {
         onSuccess: (data) => {
           alert("생성 성공!");
-          navigate(`/posts`);
+          navigate(`/community`);
         },
         onError: (err) => {
           console.log(err);
