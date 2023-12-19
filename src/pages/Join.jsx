@@ -26,10 +26,17 @@ export default function Join() {
       },
       {
         onSuccess: (data) => {
+          alert("생성 성공!");
+          navigate("/");
           console.log(data);
         },
         onError: (error) => {
-          console.log(error);
+          if (error.response && error.response.status === 409) {
+            // 409 Conflict error handling
+            alert("이미 존재하는 사용자입니다. 다른 정보를 입력해주세요.");
+          } else {
+            console.log(error.message);
+          }
         },
       }
     );

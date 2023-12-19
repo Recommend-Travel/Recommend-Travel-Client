@@ -42,7 +42,7 @@ export async function createComment(commentData) {
 }
 
 export async function deleteUser(userid) {
-  return await api.post(`/delete/${userid}`);
+  return await api.delete(`/delete/${userid}`);
 }
 
 export async function zzim(zzimData) {
