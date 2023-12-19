@@ -22,6 +22,7 @@ export default function Login() {
           localStorage.clear();
           console.log(data);
           localStorage.setItem("token", data?.data.token);
+          localStorage.setItem("userid", data?.data.user.userid);
           navigate("/");
         },
         onError: (err) => {

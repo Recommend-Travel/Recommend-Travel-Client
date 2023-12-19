@@ -25,7 +25,16 @@ export default function Home() {
           >
             로그인하러 가기
           </button>
-        ) : null}
+        ) : (
+          <button
+            onClick={() => {
+              navigate("/zzim");
+            }}
+            className="bg-orange-300 text-white rounded-lg p-3 w-64 mb-5 hover:bg-orange-200"
+          >
+            내 찜목록 보러가기
+          </button>
+        )}
         <button
           onClick={() => {
             navigate("/mbti");

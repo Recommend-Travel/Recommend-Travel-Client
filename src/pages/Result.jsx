@@ -1,15 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { result } from "../data/result";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getMBTIDestination } from "../utility/api";
+import { zzim } from "../utility/api";
 export default function Result() {
   const { mbti } = useParams();
+  const [url, setUrl] = useState();
+  const [name, setName] = useState();
+  const token = localStorage.getItem("token");
   const { data, error } = useQuery({
     queryKey: ["result", mbti],
     queryFn: () => getMBTIDestination(mbti),
   });
 
+  const mutation = useMutation({ mutationFn: zzim });
+
+  const handleZzim = async (e) => {
+    e.preventDefault();
+    mutation.mutate(
+      {
+        token: token,
+        destinationName: name,
+        imgUrl: url,
+      },
+      {
+        onSuccess: (data) => {
+          alert("찜 성공!");
+          console.log(data);
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      }
+    );
+  };
   console.log(data);
 
   return (
@@ -22,7 +47,14 @@ export default function Result() {
       </div>
       <div className="flex mt-10">
         {data?.data.recommendedDestinations.map((destination) => (
-          <div className="flex flex-col items-center mx-5">
+          <div
+            className="flex flex-col items-center mx-5"
+            onClick={(e) => {
+              setName(destination.name);
+              setUrl(destination.url);
+              handleZzim(e);
+            }}
+          >
             <img
               src={destination.url}
               className="rounded-full w-40 h-40 object-cover"

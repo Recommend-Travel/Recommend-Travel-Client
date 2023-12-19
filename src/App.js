@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Result from "./pages/Result";
 import ResultRedirect from "./pages/ResultRedirect";
 import PostDetail from "./pages/Community/PostDetail";
+import Zzim from "./pages/Zzim";
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -27,6 +28,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/join" element={<Join />} />
+                <Route path="/zzim" element={<Zzim />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/mbti" element={<Mbti />} />
                 <Route path="/community" element={<Community />} />

@@ -44,3 +44,11 @@ export async function createComment(commentData) {
 export async function deleteUser(userid) {
   return await api.post(`/delete/${userid}`);
 }
+
+export async function zzim(zzimData) {
+  return await api.post("/zzim", zzimData);
+}
+
+export async function getZzim(userid) {
+  return await api.get(`/zzim/${userid}`);
+}
