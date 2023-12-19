@@ -1,10 +1,30 @@
 import React from "react";
 import logo from "../img/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteUser } from "../utility/api";
 
 export default function Home() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userid");
+  const mutation = useMutation({
+    mutationFn: deleteUser,
+  });
+
+  const handleSubmit = () => {
+    mutation.mutate(userId, {
+      onSuccess: (data) => {
+        localStorage.clear();
+        alert("탈퇴 성공!");
+        navigate("/");
+        console.log(data);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  };
 
   return (
     <div className="flex flex-col items-center h-full">
@@ -47,10 +67,18 @@ export default function Home() {
           onClick={() => {
             navigate("/community");
           }}
-          className="bg-orange-300 text-white rounded-lg p-3 w-64 hover:bg-orange-200"
+          className="bg-orange-300 text-white rounded-lg p-3 w-64 mb-5 hover:bg-orange-200"
         >
           게시글 보러가기
         </button>
+        {token ? (
+          <button
+            onClick={handleSubmit}
+            className="bg-orange-500 text-white rounded-lg p-3 w-64 mb-5 hover:bg-orange-200"
+          >
+            회원탈퇴
+          </button>
+        ) : null}
       </div>
     </div>
   );
